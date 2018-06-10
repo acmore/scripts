@@ -6,7 +6,25 @@
 " We set it explicitely to make our position clear!
 set nocompatible
 
+" Set up Vundle
+" Set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'
+Plugin 'vim-scripts/indentpython.vim'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'nvie/vim-flake8'
+Plugin 'scrooloose/nerdtree'
+Plugin 'kien/ctrlp.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'davidhalter/jedi-vim'
+
+call vundle#end()            
+
+
 filetype plugin indent on  " Load plugins according to detected filetype.
+let python_highlight_all=1
 syntax on                  " Enable syntax highlighting.
 
 set autoindent             " Indent according to previous line.
@@ -52,4 +70,39 @@ endif
 
 " Turn off backup
 set nobackup
+set noswapfile
+set nu
+
+" Key mapping
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Open nerdtree
+map <C-n> :NERDTreeToggle<CR>
+
+
+" PEP8 style
+au BufNewFile,BufRead *.py 
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix
+
+let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
+
+" Use system clipboard
+set clipboard=unnamed
+
+" Open nerdtree if open plain vim
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Autocomplete for python
+"let g:jedi#auto_initialization = 0
 
